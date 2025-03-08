@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISL Speech-to-Sign</title>
+    <script>
+        function startSpeechRecognition() {
+            let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-IN';
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                let transcript = event.results[0][0].transcript;
+                document.getElementById("textOutput").innerText = transcript;
+                showSign(transcript.toLowerCase());
+            };
+        }
+        
+        function showSign(text) {
+            let signDict = {
+                "hello": "images/hello.gif",
+                "thank you": "images/thank_you.gif",
+                "please": "images/please.gif",
+                "yes": "images/yes.gif",
+                "no": "images/no.gif"
+            };
+            
+            let signImage = signDict[text] || "images/not_found.png";
+            document.getElementById("signImage").src = signImage;
+        }
+    </script>
+</head>
+<body>
+    <h1>Indian Sign Language (ISL) Speech-to-Sign</h1>
+    <button onclick="startSpeechRecognition()">Start Speaking</button>
+    <p id="textOutput">Your speech will appear here...</p>
+    <img id="signImage" src="images/default.png" alt="Sign Language" width="200">
+</body>
+</html>
